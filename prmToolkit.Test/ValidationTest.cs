@@ -1,28 +1,8 @@
-# prmToolkit
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using prmToolkit.Validation;
 
-# ArgumentsValidator
-Classe responsável por gerenciar validações de argumentos.
-
-Podemos realizar validações indivíduais ou em grupos.
-
-É possível levantar uma exceção ou captura-las.
-
-### Installation - ArgumentsValidator
-
-Para instalar, abra o prompt de comando Package Manager Console do seu Visual Studio e digite o comando abaixo:
-
-Para adicionar somente a referencia a dll
-```sh
-Install-Package prmToolkit.ArgumentsValidator
-```
-
-Para adicionar somente as classes
-```sh
-Install-Package prmToolkit.ArgumentsValidator-Source
-```
-### Exemplo de como usar
-
-```sh
 namespace prmToolkit.Test
 {
     [TestClass]
@@ -72,7 +52,7 @@ namespace prmToolkit.Test
                                             RaiseException.IfNotEmail("email_invalid", "email invalid")
                                             );
 
-                
+
             }
             catch (Exception ex)
             {
@@ -119,7 +99,37 @@ namespace prmToolkit.Test
                 Assert.AreEqual(ex.Message, "object is required", "is expected value not null");
             }
         }
+
+
+        /// <summary>
+        /// Testando se uma coleção é vazia
+        /// </summary>
+        [TestMethod]
+        public void LancarExcecaoIndividualCasoAsColecoesNaoTenhamItemDentro()
+        {
+            string mensagem = "Não há itens na coleção";
+            List<string> lista = new List<string>();
+            int[] numeros = new int[] { };
+            string[] nomes = new string[] { };
+
+            try
+            {
+
+                List<string> mgs = ArgumentsValidator.GetMessagesFromExceptions(
+                RaiseException.IfCollectionEmpty(lista, mensagem),
+                RaiseException.IfCollectionEmpty(numeros, mensagem),
+                RaiseException.IfCollectionEmpty(nomes, mensagem));
+
+                Assert.IsTrue(mgs.Count == 3, "As coleções estao nulas.");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            
+
+        }
     }
 }
-
-```

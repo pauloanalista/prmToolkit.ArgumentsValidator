@@ -1,32 +1,12 @@
-# prmToolkit
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using prmToolkit.Validation;
+using System.Collections.Generic;
 
-# ArgumentsValidator
-Classe responsável por gerenciar validações de argumentos.
-
-Podemos realizar validações indivíduais ou em grupos.
-
-É possível levantar uma exceção ou captura-las.
-
-### Installation - ArgumentsValidator
-
-Para instalar, abra o prompt de comando Package Manager Console do seu Visual Studio e digite o comando abaixo:
-
-Para adicionar somente a referencia a dll
-```sh
-Install-Package prmToolkit.ArgumentsValidator
-```
-
-Para adicionar somente as classes
-```sh
-Install-Package prmToolkit.ArgumentsValidator-Source
-```
-### Exemplo de como usar
-
-```sh
 namespace prmToolkit.Test
 {
     [TestClass]
-    public class ValidationTest
+    public class ArgumentsValidatorTest
     {
         /// <summary>
         /// Este método captura as mensagens das exceções lançadas pelos argumentos 
@@ -71,36 +51,11 @@ namespace prmToolkit.Test
                                             RaiseException.IfNull(null, "object is required"),
                                             RaiseException.IfNotEmail("email_invalid", "email invalid")
                                             );
-
+            }
+            catch (Exception ex)
+            {
                 
-            }
-            catch (Exception ex)
-            {
-
                 Assert.IsTrue(ex.Message.Contains("object is required") && ex.Message.Contains("email invalid"), "There should be two exceptions");
-            }
-        }
-
-        /// <summary>
-        /// Este método lança uma única exceção, com uma única mensagem que represanta as exceções geradas pelos os argumentos 
-        /// </summary>
-        [TestMethod]
-        public void LancarUnicaExcecaoComUnicaMensagemDoGrupoDeExcecoes()
-        {
-            try
-            {
-                bool existe = true;
-
-                ArgumentsValidator.RaiseExceptionOfInvalidArguments("Dados inválidos",
-                                            RaiseException.IfTrue(existe),
-                                            RaiseException.IfNotEmail("paulo.com.br")
-                                            );
-
-            }
-            catch (Exception ex)
-            {
-
-                Assert.IsTrue(ex.Message.Contains("Dados inválidos"), "There should be two exceptions");
             }
         }
 
@@ -121,5 +76,3 @@ namespace prmToolkit.Test
         }
     }
 }
-
-```
